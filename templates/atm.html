@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/imask"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+<div style="margin: 3%;" class="border">
+    <h3 class="h3" style="margin: 20px">{{ header }}</h3>
+    <form method="post" enctype="multipart/form-data">
+     {% csrf_token %}
+            <div style="width: 25%; margin: 15px" align="end" class="input-group mb-3">
+
+              <input autofocus type="text" class="form-control" placeholder={{ field }} id={{ field }} name="value" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <button class="btn btn-outline-secondary" type="submit" onclick=validate(event) id="button-addon2">Submit</button>
+            </div>
+         <label class="h6" style="visibility: hidden; margin-left: 15px; color: #F56433" id="hint">{{ message }}</label>
+         {% if card %}
+             <input class="form-control" style="visibility: hidden; height: 0" name="card" type="text" value="{{ card }}" aria-label="readonly input example" readonly>
+         {% endif %}
+    </form>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+             let item = document.querySelector('.form-control')
+                item.addEventListener('input', ()=>{
+                    if(item.value.match(/[^0-9]/g)){
+                    item.value = item.value.replace(/[^0-9]/g, "");
+                }
+                })
+             if (item.id === "Number"){
+                 IMask(item, {
+                    mask: '0000 0000 0000 0000'
+                })
+             } else{
+                 IMask(item, {
+                    mask: '0000'
+                })
+             }
+
+
+        })
+        let button = document.querySelector('#button-addon2')
+        function validate (event) {
+            let text = document.querySelector('.form-control')
+            let message = document.querySelector('#hint')
+            console.log('tut')
+            if (text.id === "Number"){
+                if (text.value.length !== 19){
+                    event.preventDefault()
+                    event.stopPropagation()
+                    message.style.visibility = "visible";
+
+                }
+            }
+            else{
+                if (text.value.length !== 4){
+                    event.preventDefault()
+                    event.stopPropagation()
+                    message.style.visibility = "visible";
+
+                }
+            }
+
+        }
+    </script>
+</body>
+</html>

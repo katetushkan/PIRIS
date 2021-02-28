@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Договор Кредитования</h1>
+    {% include "form.html" with button_label='Confirm'%}
+     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+             let item = document.getElementsByTagName('input').namedItem('total_amount');
+                item.addEventListener('input', ()=>{
+                    if(item.value.match(/[^0-9]/g)){
+                    item.value = item.value.replace(/[^0-9]/g, "");
+                }
+                })
+        })
+    </script>
+
+
+    <button onclick="window.location.href='/'">To main page</button>
+
+{% endblock %}

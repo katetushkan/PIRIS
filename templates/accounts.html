@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="mainForm">
+    <table border="1" id="taskTable">
+        <thead>
+            <tr>
+                <th colspan="1">
+                    AccountNumber
+                </th>
+                <th colspan="1">
+                    Initial price
+                </th>
+                <th colspan="1">
+                    Current price
+                </th>
+                <th colspan="1">
+                    Income
+                </th>
+                <th colspan="1">
+                    Period in month
+                </th>
+            </tr>
+        </thead>
+        {% for account in list %}
+            <tbody>
+                <tr>
+                    <td>
+                        {{ account.account_number }}
+                    </td>
+                    <td>
+                        {{ account.initial_price}}
+                    </td>
+                    <td>
+                        {{ account.current_price}}
+                    </td>
+                    <td>
+                        {{ account.income }}
+                    </td>
+                    <td>
+                        {{ account.account_type }}
+                    </td>
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+
+
+    <button class="finishButton" onclick="window.location.href='/task/finish_bank_day'">
+        Finishing bank day
+    </button>
+    <button onclick="window.location.href='/'">To main page</button>
+
+    </div>
+
+
+
+{% endblock %}

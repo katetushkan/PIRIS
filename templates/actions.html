@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+<div style="margin: 3%;max-width: 50%; width: 35%; justify-content: center; flex: auto" class="border">
+    <h3 class="h3" style="margin: 20px">Choose your next action: </h3>
+    <form method="post" action="http://0.0.0.0:8000/atm/actions" enctype="multipart/form-data">
+     {% csrf_token %}
+            <div style="width: 25%; margin: 15px; display: block" align="end" class="input-group mb-3">
+              <button style="display: block; margin-bottom: 10px; width: 150px" name="action" value="balance" class="btn btn-outline-secondary" type="submit" onclick=show_confirm("balance") id="balance">Check account balance</button>
+              <button style="display: block; margin-bottom: 10px; width: 150px" name="action" value="cash" class="btn btn-outline-secondary" type="submit" id="cash">Take a cash</button>
+              <button style="display: block; margin-bottom: 10px; width: 150px" name="action" value="card" class="btn btn-outline-secondary" type="submit" onclick=confirm_exit(event) id="button-addon2">Take a card</button>
+              <button style="display: block; width: 150px" name="action" value="phone" class="btn btn-outline-secondary" type="submit" id="account">Pay for your number account</button>
+            </div>
+            {% if card %}
+                <input class="form-control" style="visibility: hidden; height: 0" name="card" type="text" value="{{ card }}" aria-label="readonly input example" readonly>
+            {% endif %}
+    </form>
+</div>
+<script>
+    function show_confirm(str){
+
+        let button = document.querySelector('#' + str)
+        if (confirm("Do u wanna print a check?")){
+            button.value = button.value + '_check'
+            return true
+        } else {
+            return true
+        }
+    }
+    function confirm_exit(event){
+        if (confirm("Do u really wanna exit?")){
+            return true
+        } else {
+            event.preventDefault();
+            event.stopPropagation();
+            return false
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="mainForm">
+    <table border="1" id="taskTable">
+        <thead>
+            <tr>
+                <th colspan="1">
+                    Second Name
+                </th>
+                <th colspan="1">
+                    First Name
+                </th>
+                <th colspan="1">
+                    Father Name
+                </th>
+                <th colspan="1">
+                    Passport UUID
+                </th>
+            </tr>
+        </thead>
+        {% for person in list %}
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="/task/{{ person.id }}/edit">{{ person.second_name }}</a>
+                    </td>
+                    <td>
+                        {{ person.first_name}}
+                    </td>
+                    <td>
+                        {{ person.father_name }}
+                    </td>
+                    <td>
+                        {{ person.passport_uuid }}
+                    </td>
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+
+    <button class="mainButton" onclick="window.location.href='/task/create'">
+        Create task
+    </button>
+    <button class="finishButton" onclick="window.location.href='/task/accounts'">
+        Accounts list
+    </button>
+    <button class="finishButton" onclick="window.location.href='/task/credits'">
+        Credit list
+    </button>
+
+    </div>
+
+
+
+{% endblock %}

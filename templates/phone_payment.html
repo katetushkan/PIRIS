@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/imask"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+<div style="margin: 3%;max-width: 50%; width: 35%; justify-content: center; flex: auto" class="border">
+    <h3 class="h3" style="margin: 20px">Enter the price: </h3>
+    <form method="post" action="http://0.0.0.0:8000/atm/actions" enctype="multipart/form-data">
+     {% csrf_token %}
+            <div style="width: 70%; margin: 15px; display: block;text-align: start;"  class="input-group mb-3">
+              <h6 style="text-align: start" class="h6">{{ message }}</h6>
+              <input style="width: 50%; margin-bottom: 5px" type="text" class="form-control" value="{{ number }}" placeholder="Enter phone number..." id="phone" name="number" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <input style="width: 50%" type="text" class="form-control" placeholder="Enter price..." id="total-amount" name="value" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <label class="h6" style="visibility: hidden;  color: #F56433" id="hint">Enter all the fields.</label>
+              <button style="display: block; margin-bottom: 10px;" name="action" value="phone" class="btn btn-outline-secondary" type="submit" onclick=check_value(event) id="actions">Confirm</button>
+
+            </div>
+            {% if card %}
+                <input class="form-control" style="visibility: hidden; height: 0" name="card" type="text" value="{{ card }}" aria-label="readonly input example" readonly>
+            {% endif %}
+    </form>
+
+</div>
+<form style="margin: 3%" method="post" action="http://0.0.0.0:8000/atm/actions" enctype="multipart/form-data">
+     {% csrf_token %}
+              <button style="display: block; margin-bottom: 10px; margin-left: 15px; width: 150px" name="action" value="finish" class="btn btn-outline-secondary" type="submit"  id="actions">Come back</button>
+            </div>
+            {% if card %}
+                <input class="form-control" style="visibility: hidden" name="card" type="text" value="{{ card }}" aria-label="readonly input example" readonly>
+            {% endif %}
+    </form>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+             let item = document.querySelector('#total-amount')
+                item.addEventListener('input', ()=>{
+                    if(item.value.match(/[^0-9]/g)){
+                    item.value = item.value.replace(/[^0-9]/g, "");
+                    }
+
+                }
+                )
+             if (item.id === "total-amount"){
+                 IMask(item, {
+                    mask: '00000000'
+                })
+             IMask(document.getElementsByTagName('input').namedItem('number'), {
+                mask: '+ {375} (00) 000-00-00'
+            });
+
+
+        }})
+
+        function check_value(event){
+            let number = document.querySelector('#phone')
+            let value =document.querySelector('#total-amount')
+            let message = document.querySelector('#hint')
+            if (value.value === "0" || number.value.length !== 20){
+                event.preventDefault();
+                event.stopPropagation();
+                message.style.visibility = "visible"
+            } else{
+                message.style.visibility = "hidden"
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% include "form.html" with button_label='Update' %}
+    <br>
+    <button id="delete" onclick=delete_conformation()>Delete</button>
+    <button onclick="window.location.href='/'">To main page</button>
+    <button onclick="window.location.href='/task/contract/{{ object.id }}'">Create a non-revocable contract</button>
+    <button onclick="window.location.href='/task/contract_r/{{ object.id }}'">Create a revocable contract</button>
+    <button onclick="window.location.href='/task/credit/{{ object.id }}'">Create a credit contract</button>
+    <script>
+        function delete_conformation() {
+            {#let credit = document.getElementById('delete').dataset.name#}
+            {#console.log(credit)#}
+            {#if (credit === true){#}
+            {#   alert('Pay ur credits!')#}
+
+            {#else{#}
+                if (confirm('Sure to delete {{ object.name }}?')) {
+                window.location.href = '/task/{{ object.id }}/delete'
+                }
+
+        }
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            IMask(document.getElementsByTagName('input').namedItem('mobile_number'), {
+                mask: '+ {375} (00) 000-00-00'
+            });
+            IMask(document.getElementsByTagName('input').namedItem('phone_number'), {
+                mask: '8 (000) 00-00-00'
+            });
+            IMask(document.getElementsByTagName('input').namedItem('passport_id'), {
+                mask: '0000000'
+            })
+            {#console.log()#}
+            let alpha_fields = ['father_name', 'second_name', 'first_name']
+            alpha_fields.forEach((field) => {
+                let item = document.getElementsByTagName('input').namedItem(field);
+                item.addEventListener('input', ()=>{
+                    if(item.value.match(/[^а-яА-Я]/g)){
+                    item.value = item.value.replace(/[^а-яА-Я]/g, "");
+                }
+                })
+            })
+            let passport_series = document.getElementsByTagName('input').namedItem('passport_series');
+            passport_series.addEventListener('input', () => {
+                if(passport_series.value.match(/[^A-Z]/g)){
+                    passport_series.value = passport_series.value.replace(/[^A-Z]/g, "");
+                }
+            });
+
+            let passport_id = document.getElementsByTagName('input').namedItem('passport_id');
+            passport_id.addEventListener('input', () => {
+                if(passport_id.value.match(/[^0-9]/g)){
+                    passport_id.value = passport_id.value.replace(/[^0-9]/g, "");
+                }
+            });
+
+            let passport_uuid = document.getElementsByTagName('input').namedItem('passport_uuid');
+            passport_uuid.addEventListener('input', () => {
+                if(passport_uuid.value.match(/[^0-9A-Z]/g)){
+                    passport_uuid.value = passport_uuid.value.replace(/[^0-9A-Z]/g, "");
+                }
+            });
+        })
+
+    </script>
+
+{% endblock %}

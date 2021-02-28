@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="mainForm">
+    <table border="1" id="taskTable">
+        <thead>
+            <tr>
+                <th colspan="1">
+                    AccountNumber
+                </th>
+                <th colspan="1">
+                    Initial price
+                </th>
+                <th colspan="1">
+                    Current price
+                </th>
+                <th colspan="1">
+                    Income
+                </th>
+                <th colspan="1">
+                    Period in month
+                </th>
+            </tr>
+        </thead>
+        {% for account in list %}
+            <tbody>
+                <tr>
+                    <td>
+                        {{ account.account_number }}
+                    </td>
+                    <td>
+                        {{ account.initial_price}}
+                    </td>
+                    <td>
+                        {{ account.current_price}}
+                    </td>
+                    <td>
+                        {{ account.income }}
+                    </td>
+                    <td>
+                        {{ account.account_type }}
+                    </td>
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+
+
+    <button class="finishButton" onclick="window.location.href='/task/finish_credit_bank_day'">
+        Finishing bank day
+    </button>
+    <button onclick="window.location.href='/'">To main page</button>
+
+    </div>
+
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            let payments = Array()
+            let months = ['FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC', 'JAN']
+
+            {% for account in list %}
+                payments.push({{ account.payments }})
+            {% endfor %}
+            console.log(payments)
+            let result = payments.filter(payment => payment.length > 0)
+            console.log(result)
+            let chatrt = Array()
+            for (let index = 0; index < result[0].length ;index++){
+                let point = [months[index%12]]
+                result.forEach((res) => {
+                    point.push(parseFloat(res[index]));
+                })
+                chatrt.push(point)
+            }
+            console.log(chatrt)
+            var data = new google.visualization.DataTable();
+              data.addColumn('string', 'Day');
+              data.addColumn('number', 'Annual');
+              data.addColumn('number', 'Differencial');
+            data.addRows(chatrt)
+
+            var options = {
+              title: 'Credit Timeline',
+              curveType: 'function',
+              legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+      }
+    </script>
+
+
+
+{% endblock %}
